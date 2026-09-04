@@ -12,6 +12,109 @@
 </head>
 <body>
 
+    <!-- ===== FAKE LOADING SCREEN ===== -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-inner">
+            <div class="loading-logo">🎂</div>
+            <h2>Initializing Birthday Protocol...</h2>
+            <div class="loading-bar-wrap">
+                <div class="loading-bar" id="loadingBar"></div>
+            </div>
+            <p class="loading-pct" id="loadingPct">0%</p>
+            <p class="loading-status" id="loadingStatus">Loading birthday vibes...</p>
+        </div>
+    </div>
+
+    <!-- ===== WINDOWS XP ERROR ===== -->
+    <div id="winError" class="win-error">
+        <div class="win-titlebar">
+            <span>⚠️ &nbsp;BIRTHDAY.exe — Error</span>
+            <button class="win-close" onclick="closeWinError()">✕</button>
+        </div>
+        <div class="win-body">
+            <div class="win-icon">💥</div>
+            <div class="win-text">
+                <strong>BIRTHDAY.exe has stopped working.</strong>
+                <p>Your age counter has overflowed the system memory.<br>
+                Windows is searching for a solution... (just kidding, there isn't one 😂)</p>
+            </div>
+        </div>
+        <div class="win-footer">
+            <button class="win-btn" onclick="closeWinError()">OK&nbsp;&nbsp;😭</button>
+            <button class="win-btn win-btn-cancel" onclick="closeWinError()">Cancel&nbsp;&nbsp;😤</button>
+        </div>
+    </div>
+
+    <!-- ===== VIRUS ALERT ===== -->
+    <div id="virusAlert" class="virus-alert">
+        <div class="virus-header">
+            <span class="virus-icon">🦠</span>
+            <span>BirthdayShield™ Antivirus — ALERT</span>
+            <button onclick="closeVirus()">✕</button>
+        </div>
+        <div class="virus-body">
+            <p class="virus-title">⚠️ CRITICAL VIRUS DETECTED</p>
+            <p><strong>HappyBirthday.exe</strong> is actively infecting your smile.</p>
+            <p class="virus-sub">Symptoms: Uncontrollable grinning, sudden urge to eat cake, suspicious happiness levels of <strong>9999%</strong>.</p>
+            <p class="virus-warn">WARNING: There is NO cure. You WILL enjoy this birthday. 😂</p>
+        </div>
+        <div class="virus-footer">
+            <button class="virus-btn" onclick="closeVirus()">Accept Infection 🦠</button>
+            <button class="virus-btn virus-btn2" onclick="closeVirus()">I Can't Escape 😭</button>
+        </div>
+    </div>
+
+    <!-- ===== AFK POPUP ===== -->
+    <div id="afkPopup" class="afk-popup">
+        <div class="afk-inner">
+            <div class="afk-emoji">😤</div>
+            <h3>HEY! TALHA!</h3>
+            <p>You stopped scrolling for <strong id="afkSeconds">12</strong> seconds.<br>
+            The cake is getting cold and the balloons are getting jealous. <strong>GET BACK HERE!</strong> 🎈</p>
+            <button onclick="closeAfk()">I'm Back! 🏃</button>
+        </div>
+    </div>
+
+    <!-- ===== KONAMI CODE ===== -->
+    <div id="konamiOverlay" class="konami-overlay">
+        <div class="konami-inner">
+            <div class="konami-trophy">🎮</div>
+            <h1>CHEAT CODE ACTIVATED!</h1>
+            <h2>⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️🅱️🅰️</h2>
+            <p>Talha has unlocked<br><strong>INFINITE BIRTHDAY MODE</strong></p>
+            <p class="konami-sub">+9999 Birthday XP added to your account 🎊</p>
+            <button onclick="closeKonami()">LEGENDARY! 🏆</button>
+        </div>
+    </div>
+
+    <!-- ===== FAKE CALL ===== -->
+    <div id="fakeCall" class="fake-call">
+        <div class="call-photo"><img src="talha.jpg" alt=""></div>
+        <div class="call-info">
+            <span class="call-name">Talha from 2027 👻</span>
+            <span class="call-status" id="callStatus">Incoming Call...</span>
+        </div>
+        <div class="call-actions">
+            <button class="call-decline" onclick="declineCall()">📵</button>
+            <button class="call-answer" onclick="answerCall()">📞</button>
+        </div>
+    </div>
+
+    <!-- ===== RAGE QUIT POPUP ===== -->
+    <div id="ragePopup" class="rage-popup">
+        <div class="rage-inner">
+            <div class="rage-emoji">😂</div>
+            <h2>You Cannot Escape!</h2>
+            <p>This birthday celebration is <strong>legally binding</strong>.<br>
+            You agreed to have fun when you opened this page. 📜<br>
+            The exit button has been confiscated by Talha's birthday committee.</p>
+            <button onclick="closeRage()">Fine. I'll Stay. 😭</button>
+        </div>
+    </div>
+
+    <!-- ===== DOUBLE CLICK TOAST ===== -->
+    <div id="dblToast" class="dbl-toast"></div>
+
     <!-- Haunted Cursor -->
     <div id="hauntedCursor">🎊</div>
     <div id="cursorTrail"></div>
@@ -336,6 +439,14 @@
             </div>
         </div>
         <p class="kpi-footer">⚡ &nbsp;Click each task card to mark as COMPLETED.</p>
+        <div class="kpi-extra-btns">
+            <button class="cert-btn" onclick="fakeCertificate()">
+                📜 &nbsp;Download Official Birthday Certificate
+            </button>
+            <button class="rage-btn" onclick="rageQuit()">
+                😤 &nbsp;I've Had Enough!
+            </button>
+        </div>
     </section>
 
     <!-- ============ TROLL ZONE ============ -->
