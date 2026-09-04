@@ -784,47 +784,189 @@ function fakeCertificate() {
     showDblToast('📜 Preparing Official Certificate...');
     playTone(600,'sine',.12,.08);
 
-    // Fake progress using toasts
     const steps = [
         [800,  '📜 Verifying birthday credentials...'],
-        [1800, '🖨️ Printing on premium paper...'],
-        [3000, '✍️ Getting Talha\'s signature...'],
-        [4200, '📦 Packaging with gold ribbon...'],
+        [1800, '🖨️ Printing on gold-embossed paper...'],
+        [3000, '✍️ Getting royal signatures...'],
+        [4200, '🔏 Applying holographic seal...'],
         [5400, '🚀 Launching delivery rocket...'],
-        [6800, '💥 Rocket crashed. Delivery failed. Sorry bro 😂'],
+        [6800, '💥 Rocket crashed. But certificate survived! 😂'],
     ];
     steps.forEach(([delay, msg]) => setTimeout(() => showDblToast(msg), delay));
 
-    // After the prank, actually download a funny text file
     setTimeout(() => {
-        const content = `
-╔══════════════════════════════════════════╗
-║    OFFICIAL BIRTHDAY CERTIFICATE™        ║
-╠══════════════════════════════════════════╣
-║                                          ║
-║  This is to certify that                 ║
-║                                          ║
-║       TALHA KASHIF                       ║
-║                                          ║
-║  Has successfully survived another year. ║
-║  Awarded: LEGENDARY STATUS 🏆            ║
-║  Swag Level: MAXIMUM 💎                  ║
-║  Fun Level: OFF THE CHARTS 🔥            ║
-║                                          ║
-║  Signed: The Birthday Bureau™            ║
-║  Witnessed by: His Buddy 💙              ║
-║                                          ║
-║  DISCLAIMER: This certificate is 100%    ║
-║  real and legally binding in 47 galaxies ║
-║  but NOT on Earth. LOL. Happy Birthday!  ║
-╚══════════════════════════════════════════╝
-        `.trim();
-        const blob = new Blob([content], {type:'text/plain'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'TalhaKashif_BirthdayCertificate.txt';
-        a.click();
-        unlockAchievement('📜','Certificate Downloaded!');
+        const W = 1400, H = 990;
+        const cv = document.createElement('canvas');
+        cv.width = W; cv.height = H;
+        const ctx = cv.getContext('2d');
+
+        // Parchment background
+        const bgGrad = ctx.createLinearGradient(0,0,W,H);
+        bgGrad.addColorStop(0,'#fffdf0'); bgGrad.addColorStop(0.4,'#fff8dc');
+        bgGrad.addColorStop(0.7,'#fef5cc'); bgGrad.addColorStop(1,'#fdf0bb');
+        ctx.fillStyle = bgGrad; ctx.fillRect(0,0,W,H);
+        for(let i=0;i<4000;i++){
+            ctx.fillStyle=`rgba(${Math.random()>.5?180:220},${Math.random()>.5?160:200},80,${Math.random()*.06})`;
+            ctx.fillRect(Math.random()*W,Math.random()*H,Math.random()*3+1,Math.random()*3+1);
+        }
+
+        // Gold gradient helper
+        function goldGrad(x1,y1,x2,y2){
+            const g=ctx.createLinearGradient(x1,y1,x2,y2);
+            g.addColorStop(0,'#b8860b'); g.addColorStop(.25,'#ffd700');
+            g.addColorStop(.5,'#ffec80'); g.addColorStop(.75,'#ffd700');
+            g.addColorStop(1,'#b8860b'); return g;
+        }
+
+        // Borders
+        ctx.strokeStyle=goldGrad(0,0,W,0); ctx.lineWidth=14; ctx.strokeRect(18,18,W-36,H-36);
+        ctx.strokeStyle=goldGrad(0,0,W,0); ctx.lineWidth=4;  ctx.strokeRect(36,36,W-72,H-72);
+        ctx.strokeStyle=goldGrad(0,0,W,0); ctx.lineWidth=1.5;ctx.strokeRect(44,44,W-88,H-88);
+
+        // Corner rosettes
+        function rosette(cx,cy){
+            ctx.save(); ctx.translate(cx,cy);
+            for(let i=0;i<12;i++){
+                ctx.save(); ctx.rotate(i*Math.PI/6);
+                const rg=ctx.createRadialGradient(0,-22,2,0,-22,12);
+                rg.addColorStop(0,'#ffec80'); rg.addColorStop(1,'#b8860b');
+                ctx.fillStyle=rg; ctx.beginPath();
+                ctx.ellipse(0,-22,7,12,0,0,2*Math.PI); ctx.fill(); ctx.restore();
+            }
+            const cg=ctx.createRadialGradient(0,0,2,0,0,20);
+            cg.addColorStop(0,'#ffec80'); cg.addColorStop(1,'#b8860b');
+            ctx.fillStyle=cg; ctx.beginPath(); ctx.arc(0,0,20,0,2*Math.PI); ctx.fill();
+            ctx.strokeStyle='#b8860b'; ctx.lineWidth=1.5; ctx.stroke(); ctx.restore();
+        }
+        rosette(30,30); rosette(W-30,30); rosette(30,H-30); rosette(W-30,H-30);
+
+        // Watermark
+        ctx.save(); ctx.globalAlpha=.07; ctx.translate(W/2,H/2); ctx.rotate(-Math.PI/6);
+        ctx.font='bold 160px Georgia,serif'; ctx.fillStyle='#8B6914';
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText('CERTIFIED',0,0); ctx.restore();
+
+        // Header seal
+        const sX=W/2,sY=118,sR=62;
+        for(let i=0;i<36;i++){
+            const a=i*Math.PI/18;
+            ctx.fillStyle=goldGrad(sX+sR*Math.cos(a),sY+sR*Math.sin(a),sX+(sR+10)*Math.cos(a),sY+(sR+10)*Math.sin(a));
+            ctx.beginPath();
+            ctx.moveTo(sX+sR*Math.cos(a),sY+sR*Math.sin(a));
+            ctx.lineTo(sX+(sR+10)*Math.cos(a+.04),sY+(sR+10)*Math.sin(a+.04));
+            ctx.lineTo(sX+(sR+10)*Math.cos(a+.09),sY+(sR+10)*Math.sin(a+.09));
+            ctx.lineTo(sX+sR*Math.cos(a+.13),sY+sR*Math.sin(a+.13));
+            ctx.closePath(); ctx.fill();
+        }
+        const dg=ctx.createRadialGradient(sX-10,sY-10,5,sX,sY,sR);
+        dg.addColorStop(0,'#8B0000'); dg.addColorStop(1,'#4a0000');
+        ctx.fillStyle=dg; ctx.beginPath(); ctx.arc(sX,sY,sR,0,2*Math.PI); ctx.fill();
+        // Star inside seal
+        ctx.beginPath();
+        for(let i=0;i<10;i++){
+            const a2=i*Math.PI/5-Math.PI/2, r2=i%2===0?42:20;
+            i===0?ctx.moveTo(sX+r2*Math.cos(a2),sY+r2*Math.sin(a2)):ctx.lineTo(sX+r2*Math.cos(a2),sY+r2*Math.sin(a2));
+        }
+        ctx.closePath(); ctx.fillStyle='#ffd700'; ctx.fill();
+        ctx.save(); ctx.translate(sX,sY); ctx.font='bold 9px Arial'; ctx.fillStyle='#fff';
+        ctx.textAlign='center'; ctx.fillText('BIRTHDAY',0,-14); ctx.fillText('BUREAU™',0,-2); ctx.restore();
+
+        // Horizontal gold divider
+        function hLine(y,x1=60,x2=W-60){
+            const lg=ctx.createLinearGradient(x1,y,x2,y);
+            lg.addColorStop(0,'rgba(184,134,11,0)'); lg.addColorStop(.2,'#ffd700');
+            lg.addColorStop(.5,'#ffec80'); lg.addColorStop(.8,'#ffd700');
+            lg.addColorStop(1,'rgba(184,134,11,0)');
+            ctx.strokeStyle=lg; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x1,y); ctx.lineTo(x2,y); ctx.stroke();
+        }
+
+        // Header text
+        ctx.textAlign='center'; ctx.fillStyle='#7a5c00';
+        ctx.font='italic bold 15px Georgia,serif';
+        ctx.fillText('✦  THE BIRTHDAY BUREAU  ✦',W/2,66);
+        ctx.font='bold 36px Georgia,serif'; ctx.fillStyle='#4a3000';
+        ctx.fillText('OFFICIAL CERTIFICATE OF EXCELLENCE',W/2,205);
+        hLine(225,120,W-120);
+
+        // Body
+        ctx.font='italic 24px Georgia,serif'; ctx.fillStyle='#5a4000';
+        ctx.fillText('This is to certify that',W/2,280);
+
+        // Name
+        const ng=ctx.createLinearGradient(300,0,W-300,0);
+        ng.addColorStop(0,'#8B6914'); ng.addColorStop(.3,'#DAA520');
+        ng.addColorStop(.5,'#FFD700'); ng.addColorStop(.7,'#DAA520'); ng.addColorStop(1,'#8B6914');
+        ctx.font='bold 88px "Dancing Script",Georgia,serif'; ctx.fillStyle=ng;
+        ctx.fillText('Talha Kashif',W/2,378);
+        hLine(408,200,W-200);
+
+        ctx.font='italic 20px Georgia,serif'; ctx.fillStyle='#5a4000';
+        ctx.fillText('has successfully completed another lap around the sun and is hereby awarded',W/2,450);
+        ctx.fillText('the following honours by unanimous decree of The Birthday Bureau:',W/2,480);
+
+        // Award badges
+        const awards=[
+            {icon:'🏆',title:'LEGENDARY HUMAN STATUS',         sub:'Certified by the Bureau of Outstanding Individuals'},
+            {icon:'💎',title:'MAXIMUM SWAG CERTIFICATION',     sub:'Swag levels measured and confirmed off the charts'},
+            {icon:'🔥',title:'CERTIFIED BIRTHDAY SURVIVOR',    sub:'Survived another year of absolute chaos — flawlessly'},
+            {icon:'👑',title:'ELITE FRIEND TIER — PLATINUM',   sub:'Recognised as premium friend material, no returns'},
+        ];
+        const colW=(W-160)/2;
+        awards.forEach((aw,i)=>{
+            const col=i%2, row=Math.floor(i/2);
+            const ax=80+col*colW+colW/2, ay=530+row*125;
+            ctx.save(); ctx.globalAlpha=.55;
+            const bg=ctx.createLinearGradient(ax-colW/2+10,ay-30,ax+colW/2-10,ay+70);
+            bg.addColorStop(0,'rgba(184,134,11,.35)'); bg.addColorStop(1,'rgba(255,215,0,.12)');
+            ctx.fillStyle=bg; ctx.beginPath();
+            ctx.roundRect(ax-colW/2+14,ay-40,colW-28,100,12); ctx.fill();
+            ctx.globalAlpha=1; ctx.strokeStyle='rgba(184,134,11,.5)'; ctx.lineWidth=1; ctx.stroke(); ctx.restore();
+            ctx.font='32px serif'; ctx.textAlign='center'; ctx.fillText(aw.icon,ax,ay+2);
+            ctx.font='bold 17px Georgia,serif'; ctx.fillStyle='#4a3000'; ctx.fillText(aw.title,ax,ay+28);
+            ctx.font='italic 13px Georgia,serif'; ctx.fillStyle='#7a5c00'; ctx.fillText(aw.sub,ax,ay+48);
+        });
+
+        hLine(800,120,W-120);
+
+        // Left signature
+        ctx.font='italic bold 28px "Dancing Script",Georgia,serif'; ctx.fillStyle='#1a0a6b'; ctx.textAlign='center';
+        ctx.fillText('Aqib Ejaz',300,870);
+        ctx.font='13px Georgia,serif'; ctx.fillStyle='#7a5c00';
+        ctx.fillText('Your Buddy & Best Wisher',300,892); ctx.fillText('Certified Birthday Planner™',300,910);
+        ctx.strokeStyle='#b8860b'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(160,852); ctx.lineTo(440,852); ctx.stroke();
+
+        // Center date stamp
+        const dX=W/2,dY=875;
+        ctx.beginPath(); ctx.arc(dX,dY,52,0,2*Math.PI); ctx.strokeStyle='#b8860b'; ctx.lineWidth=2; ctx.stroke();
+        ctx.beginPath(); ctx.arc(dX,dY,44,0,2*Math.PI); ctx.lineWidth=.8; ctx.stroke();
+        ctx.font='bold 12px Georgia,serif'; ctx.fillStyle='#4a3000';
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText('ISSUED',dX,dY-18); ctx.font='bold 15px Georgia,serif';
+        ctx.fillText('Sep 2026',dX,dY); ctx.font='11px Georgia,serif';
+        ctx.fillText('Cert No. TK-2026-001',dX,dY+18); ctx.textBaseline='alphabetic';
+
+        // Right signature
+        ctx.font='italic bold 28px "Dancing Script",Georgia,serif'; ctx.fillStyle='#8b0000';
+        ctx.fillText('The Birthday Bureau™',W-300,870);
+        ctx.font='13px Georgia,serif'; ctx.fillStyle='#7a5c00';
+        ctx.fillText('Official Authorising Body',W-300,892);
+        ctx.fillText('Universe Division, Sector 7G',W-300,910);
+        ctx.strokeStyle='#b8860b'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(W-460,852); ctx.lineTo(W-140,852); ctx.stroke();
+
+        // Fine print
+        ctx.font='11px Georgia,serif'; ctx.fillStyle='rgba(120,90,0,.6)'; ctx.textAlign='center';
+        ctx.fillText('This certificate is 100% real and legally binding in 47 galaxies (but not on Earth). Valid for one year. Happy Birthday! 🎉',W/2,H-26);
+
+        cv.toBlob(blob=>{
+            const a=document.createElement('a');
+            a.href=URL.createObjectURL(blob);
+            a.download='TalhaKashif_OfficialBirthdayCertificate.png';
+            a.click();
+            showDblToast('🎉 Certificate downloaded! Frame it on your wall!');
+            unlockAchievement('📜','Certificate Downloaded!');
+        },'image/png');
     }, 7500);
 }
 
