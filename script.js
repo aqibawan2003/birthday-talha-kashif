@@ -591,3 +591,264 @@ sectionAch.forEach(([sel,icon,name])=>{
         if(entries[0].isIntersecting) unlockAchievement(icon,name);
     },{threshold:.25}).observe(node);
 });
+
+// ============================================================
+//  PRANKS
+// ============================================================
+
+// ===== 1. FAKE LOADING SCREEN =====
+(function fakeLoad() {
+    const screen   = document.getElementById('loadingScreen');
+    const bar      = document.getElementById('loadingBar');
+    const pct      = document.getElementById('loadingPct');
+    const status   = document.getElementById('loadingStatus');
+    const messages = [
+        'Loading birthday vibes...',
+        'Inflating balloons...',
+        'Baking the cake...',
+        'Lighting candles...',
+        'Wrapping gifts...',
+        'Almost ready...',
+        'Finalising swag levels...',
+    ];
+    let progress = 0, msgIdx = 0;
+
+    const iv = setInterval(() => {
+        // Speed up to 98, then slow crawl to 99
+        const step = progress < 90 ? Math.random()*4+2 : Math.random()*.3+.05;
+        progress = Math.min(progress + step, 99);
+        bar.style.width = progress + '%';
+        pct.textContent  = Math.floor(progress) + '%';
+        if (Math.random() > .7 && msgIdx < messages.length-1) {
+            status.textContent = messages[++msgIdx];
+        }
+        if (progress >= 99) {
+            clearInterval(iv);
+            pct.textContent  = '99%';
+            status.textContent = '99% ... 99% ... 99%...';
+            // Stuck at 99 — classic prank
+            setTimeout(() => {
+                status.innerHTML = '<span class="loading-gotcha">Just kidding, it was already loaded! 😂🎉</span>';
+                bar.style.width = '100%';
+                pct.textContent = '100%';
+                setTimeout(() => screen.classList.add('hidden'), 1200);
+            }, 2800);
+        }
+    }, 80);
+})();
+
+// ===== 2. WINDOWS XP ERROR (fires after ~25s) =====
+setTimeout(() => {
+    document.getElementById('winError').classList.add('show');
+    playTone(220,'square',.5,.08);
+    playTone(220,'square',.5,.08,.55);
+    unlockAchievement('🪟','Windows Birthday Error!');
+}, 25000);
+
+function closeWinError() {
+    document.getElementById('winError').classList.remove('show');
+    playSad();
+}
+
+// ===== 3. BIRTHDAY VIRUS ALERT (fires after ~18s) =====
+setTimeout(() => {
+    document.getElementById('virusAlert').classList.add('show');
+    playTone(440,'sawtooth',.3,.07);
+    unlockAchievement('🦠','Infected with Birthday Fever!');
+}, 18000);
+
+function closeVirus() {
+    document.getElementById('virusAlert').classList.remove('show');
+}
+
+// ===== 4. AFK DETECTOR =====
+let afkTimer, afkSeconds = 0, afkInterval;
+function resetAfk() {
+    clearTimeout(afkTimer);
+    clearInterval(afkInterval);
+    afkSeconds = 0;
+    afkTimer = setTimeout(triggerAfk, 22000);
+}
+function triggerAfk() {
+    const popup = document.getElementById('afkPopup');
+    const secEl = document.getElementById('afkSeconds');
+    afkSeconds = 0;
+    popup.classList.add('show');
+    playTone(500,'square',.15,.1);
+    playTone(500,'square',.15,.1,.2);
+    afkInterval = setInterval(() => {
+        afkSeconds++;
+        secEl.textContent = afkSeconds;
+        if (afkSeconds % 5 === 0) playTone(400,'square',.08,.08);
+    }, 1000);
+    unlockAchievement('😴','Caught Slacking!');
+}
+function closeAfk() {
+    document.getElementById('afkPopup').classList.remove('show');
+    clearInterval(afkInterval);
+    resetAfk();
+}
+['mousemove','keydown','click','scroll','touchstart'].forEach(e => document.addEventListener(e, resetAfk, {passive:true}));
+resetAfk();
+
+// ===== 5. KONAMI CODE =====
+const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let konamiIdx = 0;
+document.addEventListener('keydown', e => {
+    if (e.key === KONAMI[konamiIdx]) {
+        konamiIdx++;
+        playBlip();
+        if (konamiIdx === KONAMI.length) {
+            konamiIdx = 0;
+            document.getElementById('konamiOverlay').classList.add('active');
+            playFanfare();
+            setTimeout(() => {
+                confetti({particleCount:400,spread:160,origin:{y:.5},colors:['#ffd700','#f857a6','#6c63ff','#ff5858','#fff','#00d4ff']});
+            }, 200);
+            unlockAchievement('🎮','KONAMI CODE MASTER!');
+        }
+    } else {
+        konamiIdx = 0;
+    }
+});
+function closeKonami() { document.getElementById('konamiOverlay').classList.remove('active'); }
+
+// ===== 6. COPY PRANK =====
+document.addEventListener('copy', e => {
+    e.preventDefault();
+    const funny = 'I hereby solemnly declare that Talha Kashif is the most legendary birthday person to ever exist. Signed: The Universe 🌌🎂';
+    if (e.clipboardData) {
+        e.clipboardData.setData('text/plain', funny);
+    } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(funny);
+    }
+    showDblToast('📋 Clipboard hijacked! Talha\'s propaganda installed. 😂');
+    playTone(800,'square',.08,.07);
+});
+
+// ===== 7. FAKE INCOMING CALL (fires after ~12s) =====
+setTimeout(() => {
+    const call = document.getElementById('fakeCall');
+    call.classList.add('ringing');
+    playTone(880,'square',.3,.1);
+    setTimeout(()=>playTone(880,'square',.3,.1),.7);
+    unlockAchievement('📞','Missed Call from the Future!');
+
+    // Auto dismiss after 8s if ignored
+    setTimeout(() => {
+        if (call.classList.contains('ringing')) {
+            call.classList.remove('ringing');
+            document.getElementById('callStatus').textContent = 'Call Missed 📵';
+            setTimeout(() => call.classList.remove('ringing'), 100);
+        }
+    }, 8000);
+}, 12000);
+
+function answerCall() {
+    const call = document.getElementById('fakeCall');
+    document.getElementById('callStatus').textContent = 'Connected... 🔊';
+    playTone(1000,'sine',.2,.08);
+    setTimeout(() => {
+        document.getElementById('callStatus').textContent = '"Happy Birthday bro... also, don\'t eat the last slice. Bye!" 📵';
+        setTimeout(() => call.classList.remove('ringing'), 3000);
+    }, 1200);
+    unlockAchievement('👻','Answered the Future Call!');
+}
+function declineCall() {
+    const call = document.getElementById('fakeCall');
+    call.classList.remove('ringing');
+    playSad();
+    showDblToast('😤 You declined a call from the FUTURE. Brave choice.');
+}
+
+// ===== 8. RAGE QUIT =====
+function rageQuit() {
+    // Shake page
+    document.body.classList.remove('shaking');
+    void document.body.offsetWidth;
+    document.body.classList.add('shaking');
+    setTimeout(() => document.body.classList.remove('shaking'), 650);
+    playTone(100,'sawtooth',.6,.15);
+
+    // Then show popup
+    setTimeout(() => {
+        document.getElementById('ragePopup').classList.add('show');
+        confetti({particleCount:120,spread:100,origin:{y:.5},colors:['#ff5858','#ffd700','#6c63ff']});
+        unlockAchievement('💢','Tried to Rage Quit! Nice Try!');
+    }, 700);
+}
+function closeRage() { document.getElementById('ragePopup').classList.remove('show'); }
+
+// ===== 9. FAKE CERTIFICATE DOWNLOAD =====
+function fakeCertificate() {
+    showDblToast('📜 Preparing Official Certificate...');
+    playTone(600,'sine',.12,.08);
+
+    // Fake progress using toasts
+    const steps = [
+        [800,  '📜 Verifying birthday credentials...'],
+        [1800, '🖨️ Printing on premium paper...'],
+        [3000, '✍️ Getting Talha\'s signature...'],
+        [4200, '📦 Packaging with gold ribbon...'],
+        [5400, '🚀 Launching delivery rocket...'],
+        [6800, '💥 Rocket crashed. Delivery failed. Sorry bro 😂'],
+    ];
+    steps.forEach(([delay, msg]) => setTimeout(() => showDblToast(msg), delay));
+
+    // After the prank, actually download a funny text file
+    setTimeout(() => {
+        const content = `
+╔══════════════════════════════════════════╗
+║    OFFICIAL BIRTHDAY CERTIFICATE™        ║
+╠══════════════════════════════════════════╣
+║                                          ║
+║  This is to certify that                 ║
+║                                          ║
+║       TALHA KASHIF                       ║
+║                                          ║
+║  Has successfully survived another year. ║
+║  Awarded: LEGENDARY STATUS 🏆            ║
+║  Swag Level: MAXIMUM 💎                  ║
+║  Fun Level: OFF THE CHARTS 🔥            ║
+║                                          ║
+║  Signed: The Birthday Bureau™            ║
+║  Witnessed by: His Buddy 💙              ║
+║                                          ║
+║  DISCLAIMER: This certificate is 100%    ║
+║  real and legally binding in 47 galaxies ║
+║  but NOT on Earth. LOL. Happy Birthday!  ║
+╚══════════════════════════════════════════╝
+        `.trim();
+        const blob = new Blob([content], {type:'text/plain'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'TalhaKashif_BirthdayCertificate.txt';
+        a.click();
+        unlockAchievement('📜','Certificate Downloaded!');
+    }, 7500);
+}
+
+// ===== DOUBLE CLICK PRANK =====
+const dblMsgs = [
+    '⚠️ Error 404: Too much fun detected. Please pace yourself.',
+    '🖱️ Double-click detected. Birthday authorities have been notified.',
+    '😂 Illegal move! Double-clicking is banned on birthdays.',
+    '🎂 Error: Fun.exe is already running at 100%.',
+    '🚨 ALERT: Your clicking speed exceeds the birthday speed limit.',
+];
+let dblIdx = 0;
+document.addEventListener('dblclick', () => {
+    showDblToast(dblMsgs[dblIdx % dblMsgs.length]);
+    dblIdx++;
+    playTone(600,'square',.07,.07);
+});
+
+// ===== TOAST HELPER =====
+let dblToastTimer;
+function showDblToast(msg) {
+    const el = document.getElementById('dblToast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(dblToastTimer);
+    dblToastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
