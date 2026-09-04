@@ -7,15 +7,51 @@
     <title>Happy Birthday Talha Kashif! 🎉</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&family=Pacifico&family=Press+Start+2P&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
+    <!-- Haunted Cursor -->
+    <div id="hauntedCursor">😈</div>
+
     <!-- Floating particles background -->
     <div class="particles" id="particles"></div>
 
-    <!-- Hero Section -->
+    <!-- Achievement Toast -->
+    <div id="achievementToast" class="achievement-toast">
+        <div class="achieve-icon" id="achieveIcon">🏅</div>
+        <div class="achieve-text">
+            <span class="achieve-label">ACHIEVEMENT UNLOCKED</span>
+            <span class="achieve-name" id="achieveName">Arrived at the Party</span>
+        </div>
+    </div>
+
+    <!-- Click Frenzy Overlay -->
+    <div id="frenzyOverlay" class="frenzy-overlay">
+        <div class="frenzy-content">
+            <div class="frenzy-trophy">🏆</div>
+            <h1>CONGRATULATIONS!</h1>
+            <h2>You Are The<br><span>"LORD OF THE CLICKS"</span></h2>
+            <p>Talha has certified you as a professional button-masher since 2024.</p>
+            <button onclick="closeFrenzy()">I Accept This Honor 👑</button>
+        </div>
+    </div>
+
+    <!-- Celebration Overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-content">
+            <h1>🎉 Happy Birthday! 🎉</h1>
+            <h2>Talha Kashif</h2>
+            <p>You're absolutely legendary, bro! 🔥</p>
+            <button onclick="closeCelebration()">Continue Celebrating 🥳</button>
+        </div>
+    </div>
+
+    <!-- Canvas for particles -->
+    <canvas id="cakeCanvas"></canvas>
+
+    <!-- ===== HERO ===== -->
     <section class="hero">
         <div class="hero-content">
             <div class="photo-wrapper">
@@ -24,116 +60,166 @@
                 <img src="talha.jpg" alt="Talha Kashif" class="hero-photo">
                 <div class="crown">👑</div>
             </div>
-
             <div class="hero-text">
-                <p class="subtitle">Hey There! It's a Special Day 🎊</p>
-                <h1 class="hero-title">Happy Birthday<br><span>Talha Kashif!</span></h1>
-                <p class="hero-desc">Wishing you the most epic birthday ever, bro! May this year bring you endless wins, good vibes, and everything you deserve. 🔥</p>
-                <button class="cta-btn" id="celebrateBtn">
-                    <i class="fa-solid fa-star"></i> Celebrate Now!
-                </button>
+                <p class="subtitle">🚨 BREAKING NEWS 🚨</p>
+                <h1 class="hero-title" id="heroTitle">Happy Birthday<br><span>Talha Kashif!</span></h1>
+                <p class="hero-desc">Sources confirm: Talha Kashif has successfully completed another lap around the sun without breaking anything (that we know of). 🌍🔥</p>
+                <div class="hero-buttons">
+                    <button class="cta-btn" id="celebrateBtn">
+                        <i class="fa-solid fa-star"></i> Celebrate Now!
+                    </button>
+                    <button class="troll-btn" id="trollBtn">
+                        💰 Claim Your $1,000,000
+                    </button>
+                </div>
+                <p class="click-counter-hint" id="clickHint">👆 Click the title <span id="clickCount">10</span> more times for a surprise...</p>
             </div>
         </div>
-
-        <div class="scroll-hint">
-            <i class="fa-solid fa-chevron-down"></i>
-        </div>
+        <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i></div>
     </section>
 
-    <!-- Stats / Fun Section -->
+    <!-- ===== FUN CARDS ===== -->
     <section class="fun-section">
         <div class="section-title">
             <h2>A Day All About You! 🎯</h2>
-            <p>Because legends deserve to be celebrated</p>
+            <p>Because legends deserve to be celebrated (and roasted a little 😏)</p>
         </div>
         <div class="cards-grid">
-            <div class="fun-card">
+            <div class="fun-card reveal">
                 <div class="card-icon">🎂</div>
                 <h3>Another Year</h3>
-                <p>Wiser, stronger & more awesome than ever before!</p>
+                <p>Wiser, stronger & more awesome. Also older. But we won't mention that part 😂</p>
             </div>
-            <div class="fun-card">
+            <div class="fun-card reveal">
                 <div class="card-icon">🏆</div>
-                <h3>True Legend</h3>
-                <p>You're not just a friend — you're the definition of a real one!</p>
+                <h3>Best Buddy</h3>
+                <p>Even though you still owe me money from that one time... you know what I'm talking about 👀</p>
             </div>
-            <div class="fun-card">
+            <div class="fun-card reveal">
                 <div class="card-icon">🚀</div>
                 <h3>Big Things Ahead</h3>
-                <p>This year is going to be YOUR year. Sky is not the limit, bro!</p>
+                <p>This year is YOUR year. Sky is not the limit — unless you forgot to pay your WiFi bill 😅</p>
             </div>
-            <div class="fun-card">
+            <div class="fun-card reveal">
                 <div class="card-icon">💪</div>
-                <h3>Best Buddy</h3>
-                <p>Every crazy memory we share is a treasure I'll keep forever!</p>
+                <h3>Absolute Unit</h3>
+                <p>Studies show 100% of people who know Talha agree: he is dangerously awesome to be around!</p>
             </div>
         </div>
     </section>
 
-    <!-- Letter Section -->
+    <!-- ===== HOLOGRAPHIC LETTER ===== -->
     <section class="letter-section">
-        <div class="letter-container">
+        <div class="letter-container reveal">
+            <div class="holo-badge">📡 INCOMING TRANSMISSION</div>
             <div class="letter-header">
-                <span class="letter-emoji">✉️</span>
-                <h2>A Letter For You</h2>
-                <p>From your buddy, with love</p>
+                <span class="letter-emoji">🌌</span>
+                <h2>Holographic Message</h2>
+                <p>From: <strong>Talha Kashif — Year 2027</strong></p>
+                <div class="holo-warning">⚠️ WARNING: Do not eat the last slice. Trust me.</div>
             </div>
             <div class="letter-body" id="letterBody">
                 <p class="letter-text" id="letterText"></p>
                 <div class="letter-signature">
                     <img src="talha.jpg" alt="Talha" class="sig-img">
                     <div>
-                        <strong>For: Talha Kashif</strong>
-                        <span>From your buddy 💙</span>
+                        <strong>Talha Kashif, 2027</strong>
+                        <span>Transmission encrypted via birthday vibes 💙</span>
                     </div>
                 </div>
             </div>
-            <button class="read-btn" id="readLetterBtn"><i class="fa-regular fa-envelope-open"></i> Open Letter</button>
+            <button class="read-btn" id="readLetterBtn">
+                <i class="fa-solid fa-satellite-dish"></i> Decrypt Transmission
+            </button>
         </div>
     </section>
 
-    <!-- Wishes Section -->
-    <section class="wishes-section">
+    <!-- ===== KPI SECTION ===== -->
+    <section class="kpi-section">
         <div class="section-title">
-            <h2>Birthday Wishes 🌟</h2>
-            <p>Click each wish to reveal it!</p>
+            <h2>📋 Talha's Official KPIs</h2>
+            <p>Mandatory tasks for this birthday year. Deadline: ASAP. No excuses.</p>
         </div>
-        <div class="wishes-grid">
-            <div class="wish-card" onclick="revealWish(this)">
-                <div class="wish-front"><i class="fa-solid fa-gift"></i><p>Wish #1</p></div>
-                <div class="wish-back"><p>May every single dream you have come true this year, bro! 🌙</p></div>
+        <div class="kpi-grid">
+            <div class="kpi-card reveal" onclick="completeKPI(this)">
+                <div class="kpi-status">⬜ PENDING</div>
+                <div class="kpi-icon">🍕</div>
+                <h3>Task #1</h3>
+                <p>Eat at least 5 pizzas. This is non-negotiable. Performance review in 30 days.</p>
+                <span class="kpi-priority priority-high">Priority: HIGH 🔴</span>
             </div>
-            <div class="wish-card" onclick="revealWish(this)">
-                <div class="wish-front"><i class="fa-solid fa-fire"></i><p>Wish #2</p></div>
-                <div class="wish-back"><p>May you always be surrounded by people who genuinely love and support you! 🤝</p></div>
+            <div class="kpi-card reveal" onclick="completeKPI(this)">
+                <div class="kpi-status">⬜ PENDING</div>
+                <div class="kpi-icon">😂</div>
+                <h3>Task #2</h3>
+                <p>Laugh until your stomach hurts at least once today. KPI target: 3 belly laughs minimum.</p>
+                <span class="kpi-priority priority-medium">Priority: MEDIUM 🟡</span>
             </div>
-            <div class="wish-card" onclick="revealWish(this)">
-                <div class="wish-front"><i class="fa-solid fa-crown"></i><p>Wish #3</p></div>
-                <div class="wish-back"><p>May success chase you down wherever you go. You deserve it all, king! 👑</p></div>
+            <div class="kpi-card reveal" onclick="completeKPI(this)">
+                <div class="kpi-status">⬜ PENDING</div>
+                <div class="kpi-icon">👑</div>
+                <h3>Task #3</h3>
+                <p>Walk into every room today like you own it. Because today you actually do. Swagger mandatory.</p>
+                <span class="kpi-priority priority-high">Priority: CRITICAL 🚨</span>
             </div>
-            <div class="wish-card" onclick="revealWish(this)">
-                <div class="wish-front"><i class="fa-solid fa-heart"></i><p>Wish #4</p></div>
-                <div class="wish-back"><p>May your health, happiness, and hustle always be on 100! Stay blessed 💙</p></div>
+            <div class="kpi-card reveal" onclick="completeKPI(this)">
+                <div class="kpi-status">⬜ PENDING</div>
+                <div class="kpi-icon">🎁</div>
+                <h3>Task #4</h3>
+                <p>Accept all birthday gifts without asking "how much did this cost?" HR will be watching.</p>
+                <span class="kpi-priority priority-low">Priority: LOW 🟢</span>
             </div>
-            <div class="wish-card" onclick="revealWish(this)">
-                <div class="wish-front"><i class="fa-solid fa-star"></i><p>Wish #5</p></div>
-                <div class="wish-back"><p>May this birthday mark the beginning of your biggest chapter yet! 🚀</p></div>
+            <div class="kpi-card reveal" onclick="completeKPI(this)">
+                <div class="kpi-status">⬜ PENDING</div>
+                <div class="kpi-icon">📸</div>
+                <h3>Task #5</h3>
+                <p>Take at least one legendary photo today. File it under "Evidence of a Great Birthday".</p>
+                <span class="kpi-priority priority-medium">Priority: MEDIUM 🟡</span>
             </div>
-            <div class="wish-card" onclick="revealWish(this)">
-                <div class="wish-front"><i class="fa-solid fa-cake-candles"></i><p>Wish #6</p></div>
-                <div class="wish-back"><p>Happy Birthday Talha! The world is better with you in it. Never forget that! 🎉</p></div>
+            <div class="kpi-card reveal" onclick="completeKPI(this)">
+                <div class="kpi-status">⬜ PENDING</div>
+                <div class="kpi-icon">🥳</div>
+                <h3>Task #6</h3>
+                <p>Enjoy every single second of today. Q4 report: happiness metrics must hit 100%. No dips allowed.</p>
+                <span class="kpi-priority priority-high">Priority: HIGH 🔴</span>
+            </div>
+        </div>
+        <p class="kpi-footer">⚡ Click each task to mark as COMPLETED — your buddy is monitoring your progress.</p>
+    </section>
+
+    <!-- ===== TROLL SECTION ===== -->
+    <section class="troll-section">
+        <div class="section-title">
+            <h2>🎰 Talha's Lucky Zone</h2>
+            <p>Exclusive birthday offers just for you!</p>
+        </div>
+        <div class="troll-cards">
+            <div class="troll-card reveal">
+                <h3>🏖️ Free Vacation</h3>
+                <p>All-expenses-paid trip to paradise!</p>
+                <button class="troll-claim-btn" data-msg="Haha! The jet is stuck in traffic 🚗💨">CLAIM NOW</button>
+            </div>
+            <div class="troll-card reveal">
+                <h3>🍔 Infinite Burgers</h3>
+                <p>Unlimited free burgers for life!</p>
+                <button class="troll-claim-btn" data-msg="The burger chef called in sick 🤧 Try again next year!">CLAIM NOW</button>
+            </div>
+            <div class="troll-card reveal">
+                <h3>😴 Extra Sleep</h3>
+                <p>10 extra hours of sleep every day!</p>
+                <button class="troll-claim-btn" data-msg="Your sleep quota was used up in 2019. Sorry bro 😂">CLAIM NOW</button>
             </div>
         </div>
     </section>
 
-    <!-- Cake Section -->
+    <!-- ===== CAKE SECTION ===== -->
     <section class="cake-section">
         <div class="section-title">
-            <h2>Make a Wish! 🕯️</h2>
-            <p>Click the cake to blow out the candles</p>
+            <h2>💥 Make a LEGENDARY Wish! 🕯️</h2>
+            <p>Click the cake to trigger the most epic birthday explosion ever</p>
         </div>
         <div class="cake-wrapper" id="cakeWrapper">
-            <div class="candles">
+            <div class="candles" id="candlesContainer">
                 <div class="candle"><div class="flame"></div></div>
                 <div class="candle"><div class="flame"></div></div>
                 <div class="candle"><div class="flame"></div></div>
@@ -141,26 +227,25 @@
                 <div class="candle"><div class="flame"></div></div>
             </div>
             <img src="cake.png" alt="Birthday Cake" class="cake-img" id="cakeImg">
-            <p class="cake-hint">👆 Tap the cake!</p>
+            <p class="cake-hint" id="cakeHint">👆 Click me for MAGIC! 💥</p>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <img src="talha.jpg" alt="Talha Kashif" class="footer-img">
         <h3>Happy Birthday Talha Kashif! 🎉</h3>
-        <p>Have an absolutely legendary day, bro! 🔥</p>
+        <p>May your year be as legendary as you are! 🔥</p>
         <div class="footer-emojis">🎂 🎊 🎈 🎁 🎉 🎆 🥳</div>
-        <p class="footer-credit">Made with 💙 by your buddy</p>
+        <p class="footer-credit">Made with 💙 by <a href="https://aqibawan2003.vercel.app" target="_blank" rel="noopener">Aqib.Ejaz9</a></p>
     </footer>
 
-    <!-- Cake Celebration Overlay -->
-    <div class="celebration-overlay" id="celebrationOverlay">
-        <div class="celebration-content">
-            <h1>🎉 Happy Birthday! 🎉</h1>
-            <h2>Talha Kashif</h2>
-            <p>You're absolutely amazing, bro! 🔥</p>
-            <button onclick="closeCelebration()">Continue Celebrating 🥳</button>
+    <!-- Troll Popup -->
+    <div id="trollPopup" class="troll-popup">
+        <div class="troll-popup-inner">
+            <div class="troll-meme">😂</div>
+            <h2 id="trollMsg">Haha! Your money is stuck in traffic!</h2>
+            <button onclick="closeTrollPopup()">Ok fine 😭</button>
         </div>
     </div>
 
