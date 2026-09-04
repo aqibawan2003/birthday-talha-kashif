@@ -472,6 +472,202 @@ section{position:relative;z-index:2;padding:80px 20px}
   .music-player{min-width:unset;padding:10px 14px;gap:10px}
   .music-info{display:none}
 }
+/* ===== FAKE LOADING SCREEN ===== */
+.loading-screen{
+  position:fixed;inset:0;background:#020010;z-index:9999999;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .6s ease,visibility .6s ease;
+}
+.loading-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loading-inner{text-align:center;padding:20px;max-width:400px}
+.loading-logo{font-size:4rem;animation:loadSpin 1s linear infinite;display:block;margin-bottom:20px}
+@keyframes loadSpin{to{transform:rotate(360deg)}}
+.loading-inner h2{font-family:'Poppins',sans-serif;font-size:1.1rem;color:#fff;margin-bottom:24px;font-weight:600}
+.loading-bar-wrap{height:8px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin-bottom:10px}
+.loading-bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:10px;transition:width .3s ease}
+.loading-pct{color:var(--gold);font-family:'Press Start 2P',monospace;font-size:.7rem;margin-bottom:10px}
+.loading-status{color:var(--muted);font-size:.82rem}
+.loading-gotcha{color:var(--secondary);font-size:1rem;font-weight:700;animation:fadeSlideIn .4s ease}
+
+/* ===== WINDOWS XP ERROR ===== */
+.win-error{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:#ece9d8;border:2px solid #0054e3;border-radius:4px;
+  width:min(400px,92vw);z-index:999995;display:none;
+  box-shadow:4px 4px 12px rgba(0,0,0,.6),inset 1px 1px 0 rgba(255,255,255,.8);
+  font-family:'Poppins',sans-serif;
+}
+.win-error.show{display:block;animation:winPop .25s ease}
+@keyframes winPop{from{transform:translate(-50%,-50%) scale(.8)}to{transform:translate(-50%,-50%) scale(1)}}
+.win-titlebar{
+  background:linear-gradient(to right,#0054e3,#0066ff);
+  color:#fff;padding:6px 10px;display:flex;align-items:center;justify-content:space-between;
+  font-size:.82rem;font-weight:700;
+}
+.win-close{background:linear-gradient(to bottom,#f0a0a0,#c00);border:1px solid #800;border-radius:2px;color:#fff;width:20px;height:18px;font-size:.65rem;cursor:pointer;font-family:sans-serif;padding:0;display:flex;align-items:center;justify-content:center}
+.win-body{display:flex;gap:16px;padding:20px 16px 12px;align-items:flex-start}
+.win-icon{font-size:2.8rem;flex-shrink:0}
+.win-text strong{font-size:.9rem;color:#000;display:block;margin-bottom:8px}
+.win-text p{font-size:.8rem;color:#333;line-height:1.5}
+.win-footer{display:flex;gap:10px;justify-content:center;padding:10px 16px 14px}
+.win-btn{
+  background:linear-gradient(to bottom,#f0f0f0,#ddd);border:1px solid #aaa;
+  border-radius:3px;padding:5px 22px;font-size:.82rem;cursor:pointer;
+  font-family:'Poppins',sans-serif;color:#000;transition:background .2s;
+}
+.win-btn:hover{background:linear-gradient(to bottom,#e0e8ff,#c8d8ff)}
+.win-btn-cancel{background:linear-gradient(to bottom,#f0f0f0,#ddd)}
+
+/* ===== VIRUS ALERT ===== */
+.virus-alert{
+  position:fixed;bottom:-300px;right:20px;width:min(340px,90vw);
+  background:linear-gradient(135deg,#1a0010,#2a0020);
+  border:1.5px solid #ff3366;border-radius:14px;z-index:999994;
+  transition:bottom .5s cubic-bezier(.175,.885,.32,1.275);overflow:hidden;
+  box-shadow:0 8px 40px rgba(255,51,102,.3);
+}
+.virus-alert.show{bottom:20px}
+.virus-header{
+  background:rgba(255,51,102,.15);padding:10px 16px;
+  display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,51,102,.2);
+}
+.virus-header span:nth-child(2){flex:1;font-size:.75rem;color:#ff8099;font-weight:600}
+.virus-header button{background:none;border:none;color:#ff8099;cursor:pointer;font-size:1rem}
+.virus-icon{font-size:1.3rem;animation:virusWiggle .5s linear infinite}
+@keyframes virusWiggle{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.virus-body{padding:16px}
+.virus-title{font-size:.92rem;font-weight:800;color:#ff3366;margin-bottom:8px}
+.virus-body p{font-size:.8rem;color:#ddd;line-height:1.6;margin-bottom:8px}
+.virus-sub{color:#bbb !important}
+.virus-warn{color:#ff8099 !important;font-style:italic}
+.virus-footer{padding:12px 16px;display:flex;gap:10px}
+.virus-btn{
+  flex:1;padding:9px 0;border-radius:8px;border:none;cursor:pointer;
+  font-size:.78rem;font-weight:700;font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#ff3366,#cc0033);color:#fff;transition:transform .2s;
+}
+.virus-btn:hover{transform:scale(1.04)}
+.virus-btn2{background:rgba(255,51,102,.15);color:#ff8099;border:1px solid rgba(255,51,102,.3) !important}
+
+/* ===== AFK POPUP ===== */
+.afk-popup{
+  position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999993;
+  display:none;align-items:center;justify-content:center;text-align:center;padding:20px;
+}
+.afk-popup.show{display:flex;animation:fadeIn .4s ease}
+.afk-inner{
+  background:linear-gradient(135deg,#0d0a2e,#1e1560);
+  border:2px solid var(--secondary);border-radius:24px;
+  padding:44px 36px;max-width:420px;width:100%;
+}
+.afk-emoji{font-size:4rem;margin-bottom:14px;display:block;animation:afkShake .3s linear infinite}
+@keyframes afkShake{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.afk-inner h3{font-size:1.6rem;font-weight:800;color:var(--secondary);margin-bottom:12px}
+.afk-inner p{color:var(--muted);font-size:.9rem;line-height:1.65;margin-bottom:24px}
+.afk-inner strong{color:#fff}
+.afk-inner button{background:linear-gradient(135deg,var(--secondary),var(--primary));color:#fff;border:none;padding:13px 36px;border-radius:50px;font-size:1rem;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer;transition:transform .2s}
+.afk-inner button:hover{transform:scale(1.05)}
+
+/* ===== KONAMI ===== */
+.konami-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:999992;
+  display:none;align-items:center;justify-content:center;text-align:center;padding:20px;
+}
+.konami-overlay.active{display:flex;animation:fadeIn .4s ease}
+.konami-inner{max-width:500px}
+.konami-trophy{font-size:5rem;margin-bottom:16px;display:block;animation:trophySpin 1s linear infinite}
+.konami-inner h1{font-family:'Press Start 2P',monospace;font-size:clamp(.8rem,2.5vw,1.3rem);color:var(--gold);text-shadow:0 0 20px gold;margin-bottom:16px;line-height:1.7}
+.konami-inner h2{font-size:1.5rem;color:var(--cyan);margin-bottom:10px;letter-spacing:3px}
+.konami-inner p{font-size:1rem;color:#fff;margin-bottom:8px}
+.konami-sub{color:var(--muted) !important;font-size:.85rem !important}
+.konami-inner button{margin-top:24px;background:linear-gradient(135deg,var(--gold),#ff9800);color:#000;border:none;padding:14px 38px;border-radius:50px;font-size:1rem;font-weight:800;font-family:'Poppins',sans-serif;cursor:pointer;transition:transform .2s}
+.konami-inner button:hover{transform:scale(1.06)}
+
+/* ===== FAKE CALL ===== */
+.fake-call{
+  position:fixed;top:-160px;left:50%;transform:translateX(-50%);
+  background:rgba(20,15,60,.97);border:1.5px solid rgba(0,212,255,.35);
+  border-radius:22px;padding:18px 22px;display:flex;align-items:center;gap:16px;
+  z-index:999991;min-width:290px;max-width:340px;width:90vw;
+  transition:top .5s cubic-bezier(.175,.885,.32,1.275);
+  box-shadow:0 8px 40px rgba(0,212,255,.2);backdrop-filter:blur(20px);
+}
+.fake-call.ringing{top:20px}
+.call-photo{width:52px;height:52px;border-radius:50%;overflow:hidden;border:2px solid var(--cyan);flex-shrink:0}
+.call-photo img{width:100%;height:100%;object-fit:cover;object-position:top}
+.call-info{flex:1}
+.call-name{display:block;font-size:.9rem;font-weight:700;color:#fff;margin-bottom:3px}
+.call-status{display:block;font-size:.74rem;color:var(--cyan)}
+.call-actions{display:flex;gap:10px;flex-shrink:0}
+.call-decline,.call-answer{
+  width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+  font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:transform .2s;
+}
+.call-decline{background:rgba(255,88,88,.2);border:1px solid rgba(255,88,88,.4)}
+.call-decline:hover{transform:scale(1.1);background:rgba(255,88,88,.4)}
+.call-answer{background:rgba(0,255,128,.15);border:1px solid rgba(0,255,128,.4);animation:callPulse 1s ease infinite}
+.call-answer:hover{transform:scale(1.1)}
+@keyframes callPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,255,128,.5)}50%{box-shadow:0 0 0 8px rgba(0,255,128,0)}}
+
+/* ===== RAGE QUIT POPUP ===== */
+.rage-popup{
+  position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:999990;
+  display:none;align-items:center;justify-content:center;text-align:center;padding:20px;
+}
+.rage-popup.show{display:flex;animation:fadeIn .3s ease}
+.rage-inner{background:linear-gradient(135deg,#1a0a0a,#2a1010);border:2px solid var(--accent);border-radius:24px;padding:44px 36px;max-width:420px;width:100%}
+.rage-emoji{font-size:4.5rem;margin-bottom:14px;display:block}
+.rage-inner h2{font-size:1.6rem;font-weight:800;color:var(--accent);margin-bottom:12px}
+.rage-inner p{color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:24px}
+.rage-inner strong{color:#fff}
+.rage-inner button{background:linear-gradient(135deg,var(--accent),#ff9800);color:#fff;border:none;padding:13px 36px;border-radius:50px;font-size:1rem;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer;transition:transform .2s}
+.rage-inner button:hover{transform:scale(1.05)}
+
+/* ===== DOUBLE CLICK TOAST ===== */
+.dbl-toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(15,10,50,.97);border:1px solid var(--border);border-radius:50px;
+  padding:12px 26px;font-size:.85rem;color:#fff;font-weight:600;
+  z-index:999989;opacity:0;pointer-events:none;
+  transition:opacity .3s,transform .3s;white-space:nowrap;
+  box-shadow:0 8px 30px rgba(108,99,255,.3);
+}
+.dbl-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== RAGE & CERT BUTTONS ===== */
+.kpi-extra-btns{
+  display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:32px;
+}
+.cert-btn{
+  background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;
+  padding:13px 30px;border-radius:50px;font-size:.9rem;font-weight:700;
+  font-family:'Poppins',sans-serif;cursor:pointer;transition:all .3s;
+  box-shadow:0 6px 20px rgba(255,215,0,.3);
+}
+.cert-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 30px rgba(255,215,0,.4)}
+.rage-btn{
+  background:linear-gradient(135deg,var(--accent),#ff5500);color:#fff;border:none;
+  padding:13px 30px;border-radius:50px;font-size:.9rem;font-weight:700;
+  font-family:'Poppins',sans-serif;cursor:pointer;transition:all .3s;
+  box-shadow:0 6px 20px rgba(255,88,88,.3);
+}
+.rage-btn:hover{transform:translateY(-3px) scale(1.03)}
+
+/* ===== PAGE SHAKE ===== */
+@keyframes pageShake{
+  0%,100%{transform:none}
+  10%{transform:translate(-8px,-4px) rotate(-.5deg)}
+  20%{transform:translate(8px, 4px) rotate(.5deg)}
+  30%{transform:translate(-10px, 2px) rotate(-1deg)}
+  40%{transform:translate(10px,-2px) rotate(1deg)}
+  50%{transform:translate(-6px, 6px) rotate(-.5deg)}
+  60%{transform:translate(6px,-6px) rotate(.5deg)}
+  70%{transform:translate(-8px, 3px)}
+  80%{transform:translate(8px,-3px)}
+  90%{transform:translate(-4px, 4px)}
+}
+body.shaking{animation:pageShake .6s ease}
+
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--dark)}
 ::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
