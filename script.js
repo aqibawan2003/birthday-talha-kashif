@@ -1024,83 +1024,191 @@ function toggleTheme() {
     }
 })();
 
-// ===== BUTTERFLIES =====
+// ===== 3D PREMIUM BUTTERFLIES =====
 const BF_PALETTES = [
-    // [wing1, wing2, spot, glow]
-    ['#f857a6','#ff90c8','#ffd700','rgba(248,87,166,.6)'],   // pink-gold
-    ['#7c6fff','#b8b0ff','#00d4ff','rgba(124,111,255,.6)'],  // purple-cyan
-    ['#00d4ff','#80eaff','#a8ff78','rgba(0,212,255,.5)'],    // cyan-green
-    ['#ffd700','#ffe980','#ff6b6b','rgba(255,215,0,.55)'],   // gold-red
-    ['#a8ff78','#d0ffb0','#7c6fff','rgba(168,255,120,.5)'],  // green-purple
-    ['#ff6b9d','#ffb3cc','#ffd700','rgba(255,107,157,.55)'], // rose-gold
-    ['#40e0ff','#a0f8ff','#f857a6','rgba(64,224,255,.5)'],   // sky-pink
+    // [primaryWing, secondaryWing, spotColor, glowColor]  — inspired by real species
+    ['#1e90ff','#0a4080','#e0f4ff','rgba(30,144,255,.7)'],    // Blue Morpho
+    ['#f857a6','#9b1060','#ffd700','rgba(248,87,166,.7)'],    // Pink Emperor
+    ['#ff8c00','#b85800','#fffacd','rgba(255,140,0,.7)'],     // Monarch
+    ['#7c6fff','#3a1a9c','#d0c4ff','rgba(124,111,255,.72)'],  // Purple Emperor
+    ['#2ecc71','#16613a','#a8ff78','rgba(46,204,113,.65)'],   // Malachite
+    ['#ff6b35','#b03000','#ffd700','rgba(255,107,53,.7)'],    // Painted Lady
+    ['#40e0ff','#007aaa','#ffffff','rgba(64,224,255,.65)'],   // Glasswing Blue
+    ['#ff3ea5','#7a0044','#ffec80','rgba(255,62,165,.68)'],   // Crimson Rose
 ];
 
-function makeButterflyEl(palette, size) {
+function makePremiumButterfly(palette, size) {
     const [c1, c2, cs, glow] = palette;
-    const hw = size, hh = size * 0.65;
+    const uid = Math.floor(Math.random() * 1e7);
+    const sw  = size * 1.38;   // single-side wing width
+    const sh  = size * 2.5;    // total wing height
+    const flapDur = (0.2 + Math.random() * 0.22).toFixed(2) + 's';
+    const totalW  = sw * 2 + size * 0.35;
+
+    // Build SVG for one side (left=true body attach on right, left=false on left)
+    function buildWingSVG(isLeft) {
+        const bx = isLeft ? sw : 0;   // body x within this SVG
+        const by = sh * 0.41;          // body y
+
+        // ── Upper forewing ──
+        const uf = isLeft
+            ? `M${sw},${sh*.38} C${sw*.82},${sh*.02} ${sw*.42},-${sh*.06} ${sw*.06},${sh*.04}
+               C-${sw*.04},${sh*.12} -${sw*.02},${sh*.32} ${sw*.07},${sh*.43}
+               C${sw*.28},${sh*.48} ${sw*.64},${sh*.46} ${sw},${sh*.44}Z`
+            : `M0,${sh*.38} C${sw*.18},${sh*.02} ${sw*.58},-${sh*.06} ${sw*.94},${sh*.04}
+               C${sw*1.04},${sh*.12} ${sw*1.02},${sh*.32} ${sw*.93},${sh*.43}
+               C${sw*.72},${sh*.48} ${sw*.36},${sh*.46} 0,${sh*.44}Z`;
+
+        // ── Lower hindwing ──
+        const lh = isLeft
+            ? `M${sw},${sh*.47} C${sw*.72},${sh*.57} ${sw*.28},${sh*.7} ${sw*.08},${sh*.95}
+               C-${sw*.03},${sh*1.12} ${sw*.12},${sh*1.28} ${sw*.38},${sh*1.22}
+               C${sw*.65},${sh*1.14} ${sw*.88},${sh*.88} ${sw},${sh*.56}Z`
+            : `M0,${sh*.47} C${sw*.28},${sh*.57} ${sw*.72},${sh*.7} ${sw*.92},${sh*.95}
+               C${sw*1.03},${sh*1.12} ${sw*.88},${sh*1.28} ${sw*.62},${sh*1.22}
+               C${sw*.35},${sh*1.14} ${sw*.12},${sh*.88} 0,${sh*.56}Z`;
+
+        // ── Eye spots (cx depends on side) ──
+        const ex1 = isLeft ? sw*.28 : sw*.72;
+        const ex2 = isLeft ? sw*.22 : sw*.78;
+
+        // ── Gradient cx depends on side ──
+        const gcx1 = isLeft ? '88%' : '12%';
+        const gcx2 = isLeft ? '82%' : '18%';
+
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${sw} ${sh}" width="${sw}" height="${sh}" overflow="visible">
+          <defs>
+            <radialGradient id="ug${uid}${isLeft?'l':'r'}" cx="${gcx1}" cy="40%" r="72%">
+              <stop offset="0%"   stop-color="#fff"  stop-opacity=".35"/>
+              <stop offset="18%"  stop-color="${cs}"  stop-opacity=".8"/>
+              <stop offset="55%"  stop-color="${c1}"  stop-opacity=".94"/>
+              <stop offset="100%" stop-color="${c2}"  stop-opacity=".78"/>
+            </radialGradient>
+            <radialGradient id="lg${uid}${isLeft?'l':'r'}" cx="${gcx2}" cy="45%" r="65%">
+              <stop offset="0%"   stop-color="${cs}"  stop-opacity=".65"/>
+              <stop offset="45%"  stop-color="${c2}"  stop-opacity=".88"/>
+              <stop offset="100%" stop-color="${c1}"  stop-opacity=".65"/>
+            </radialGradient>
+            <radialGradient id="sh${uid}${isLeft?'l':'r'}" cx="50%" cy="30%" r="50%">
+              <stop offset="0%"   stop-color="#fff" stop-opacity=".28"/>
+              <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- Upper forewing -->
+          <path d="${uf}" fill="url(#ug${uid}${isLeft?'l':'r'})"
+                stroke="${c1}" stroke-width=".5" stroke-opacity=".25"/>
+          <!-- Lower hindwing -->
+          <path d="${lh}" fill="url(#lg${uid}${isLeft?'l':'r'})"
+                stroke="${c2}" stroke-width=".5" stroke-opacity=".22"/>
+          <!-- Wing veins -->
+          <g stroke="${c1}" stroke-width=".9" opacity=".32" fill="none">
+            ${isLeft ? `
+            <path d="M${sw},${sh*.41} C${sw*.62},${sh*.18} ${sw*.32},${sh*.06} ${sw*.04},${sh*.12}"/>
+            <path d="M${sw},${sh*.41} C${sw*.55},${sh*.36} ${sw*.25},${sh*.3} ${sw*.02},${sh*.4}"/>
+            <path d="M${sw},${sh*.5}  C${sw*.6},${sh*.62} ${sw*.36},${sh*.88} ${sw*.14},${sh*1.06}"/>
+            <path d="M${sw},${sh*.5}  C${sw*.72},${sh*.68} ${sw*.52},${sh*.96} ${sw*.4},${sh*1.16}"/>
+            ` : `
+            <path d="M0,${sh*.41} C${sw*.38},${sh*.18} ${sw*.68},${sh*.06} ${sw*.96},${sh*.12}"/>
+            <path d="M0,${sh*.41} C${sw*.45},${sh*.36} ${sw*.75},${sh*.3} ${sw*.98},${sh*.4}"/>
+            <path d="M0,${sh*.5}  C${sw*.4},${sh*.62} ${sw*.64},${sh*.88} ${sw*.86},${sh*1.06}"/>
+            <path d="M0,${sh*.5}  C${sw*.28},${sh*.68} ${sw*.48},${sh*.96} ${sw*.6},${sh*1.16}"/>
+            `}
+          </g>
+          <!-- Iridescent shimmer overlay -->
+          <path d="${uf}" fill="url(#sh${uid}${isLeft?'l':'r'})"/>
+          <!-- Upper eye spot (3 rings) -->
+          <circle cx="${ex1}" cy="${sh*.21}" r="${size*.17}" fill="${c2}" opacity=".72"/>
+          <circle cx="${ex1}" cy="${sh*.21}" r="${size*.1}"  fill="#fff"  opacity=".6"/>
+          <circle cx="${ex1}" cy="${sh*.21}" r="${size*.045}" fill="#0a0522" opacity=".9"/>
+          <!-- Lower eye spot (2 rings) -->
+          <circle cx="${ex2}" cy="${sh*.87}" r="${size*.12}" fill="${cs}" opacity=".65"/>
+          <circle cx="${ex2}" cy="${sh*.87}" r="${size*.07}" fill="#fff"  opacity=".55"/>
+          <circle cx="${ex2}" cy="${sh*.87}" r="${size*.03}" fill="#0a0522" opacity=".8"/>
+        </svg>`;
+    }
+
+    // ── Container ──
     const el = document.createElement('div');
     el.className = 'butterfly';
-    el.style.cssText = `width:${hw*2}px;height:${hh*2.2}px;filter:drop-shadow(0 0 8px ${glow})`;
-    el.innerHTML = `<svg viewBox="-${hw} -${hh*0.8} ${hw*2} ${hh*2.4}" xmlns="http://www.w3.org/2000/svg" width="${hw*2}" height="${hh*2.2}">
-      <g class="bf-wings-left">
-        <path d="M0,0 C${-hw*.18},${-hh*.9} ${-hw*.85},${-hh*1.1} ${-hw*.98},${-hh*.3}
-                 C${-hw*1.05},${hh*.3} ${-hw*.7},${hh*.7} 0,${hh*.25}"
-              fill="${c1}" opacity=".92"/>
-        <path d="M0,${hh*.2} C${-hw*.22},${hh*.5} ${-hw*.75},${hh*1.05} ${-hw*.6},${hh*1.28}
-                 C${-hw*.45},${hh*1.5} ${-hw*.15},${hh*.95} 0,${hh*.55}"
-              fill="${c2}" opacity=".82"/>
-        <circle cx="${-hw*.52}" cy="${-hh*.28}" r="${size*.14}" fill="${cs}" opacity=".55"/>
-      </g>
-      <g class="bf-wings-right">
-        <path d="M0,0 C${hw*.18},${-hh*.9} ${hw*.85},${-hh*1.1} ${hw*.98},${-hh*.3}
-                 C${hw*1.05},${hh*.3} ${hw*.7},${hh*.7} 0,${hh*.25}"
-              fill="${c1}" opacity=".92"/>
-        <path d="M0,${hh*.2} C${hw*.22},${hh*.5} ${hw*.75},${hh*1.05} ${hw*.6},${hh*1.28}
-                 C${hw*.45},${hh*1.5} ${hw*.15},${hh*.95} 0,${hh*.55}"
-              fill="${c2}" opacity=".82"/>
-        <circle cx="${hw*.52}" cy="${-hh*.28}" r="${size*.14}" fill="${cs}" opacity=".55"/>
-      </g>
-      <!-- body -->
-      <ellipse cx="0" cy="${hh*.3}" rx="${size*.07}" ry="${hh*.6}" fill="#2a1240" opacity=".85"/>
-      <circle  cx="0" cy="${-hh*.1}" r="${size*.1}" fill="#2a1240" opacity=".85"/>
-      <!-- antennae -->
-      <line x1="0" y1="${-hh*.2}" x2="${-hw*.3}" y2="${-hh*.95}" stroke="#2a1240" stroke-width="${size*.04}" stroke-linecap="round"/>
-      <line x1="0" y1="${-hh*.2}" x2="${hw*.3}"  y2="${-hh*.95}" stroke="#2a1240" stroke-width="${size*.04}" stroke-linecap="round"/>
-      <circle cx="${-hw*.3}" cy="${-hh*.95}" r="${size*.06}" fill="${cs}"/>
-      <circle cx="${hw*.3}"  cy="${-hh*.95}" r="${size*.06}" fill="${cs}"/>
+    el.style.cssText = `width:${totalW}px;height:${sh}px;perspective:${size*6}px;`;
+
+    // ── Left wing group ──
+    const lg = document.createElement('div');
+    lg.className = 'bf-left-group';
+    lg.style.cssText = `right:calc(50% + ${size*.12}px);top:0;width:${sw}px;height:${sh}px;
+        transform-origin:right ${sh*.43}px;animation-duration:${flapDur};
+        filter:drop-shadow(-2px 2px 10px ${glow});`;
+    lg.innerHTML = buildWingSVG(true);
+
+    // ── Right wing group ──
+    const rg = document.createElement('div');
+    rg.className = 'bf-right-group';
+    rg.style.cssText = `left:calc(50% + ${size*.12}px);top:0;width:${sw}px;height:${sh}px;
+        transform-origin:left ${sh*.43}px;animation-duration:${flapDur};
+        filter:drop-shadow(2px 2px 10px ${glow});`;
+    rg.innerHTML = buildWingSVG(false);
+
+    // ── Body ──
+    const bw = size * 0.24, bh = sh * 0.56;
+    const bd = document.createElement('div');
+    bd.className = 'bf-body';
+    bd.style.cssText = `left:50%;top:${sh*.08}px;transform:translateX(-50%);
+        width:${bw}px;height:${bh}px;z-index:3;`;
+    const antennaSpread = size * 0.32;
+    bd.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${bw} ${bh+size*.6}"
+        width="${bw}" height="${bh+size*.6}" overflow="visible">
+      <defs>
+        <radialGradient id="bd${uid}" cx="35%" cy="25%">
+          <stop offset="0%"   stop-color="#8050c0"/>
+          <stop offset="100%" stop-color="#1a0530"/>
+        </radialGradient>
+      </defs>
+      <!-- Segmented body -->
+      <ellipse cx="${bw/2}" cy="${bh*.58}" rx="${bw/2}" ry="${bh*.44}" fill="url(#bd${uid})"/>
+      <!-- Thorax -->
+      <ellipse cx="${bw/2}" cy="${bh*.22}" rx="${bw*.55}" ry="${bh*.18}" fill="#2a1248"/>
+      <!-- Head -->
+      <circle  cx="${bw/2}" cy="${bh*.1}"  r="${bw*.52}" fill="#1e0e38"/>
+      <!-- Antennae -->
+      <line x1="${bw*.5}" y1="${bh*.06}" x2="${bw*.5-antennaSpread}" y2="${-size*.35}"
+            stroke="#1a0630" stroke-width="${bw*.22}" stroke-linecap="round"/>
+      <line x1="${bw*.5}" y1="${bh*.06}" x2="${bw*.5+antennaSpread}" y2="${-size*.35}"
+            stroke="#1a0630" stroke-width="${bw*.22}" stroke-linecap="round"/>
+      <circle cx="${bw*.5-antennaSpread}" cy="${-size*.35}" r="${bw*.35}" fill="${cs}"/>
+      <circle cx="${bw*.5+antennaSpread}" cy="${-size*.35}" r="${bw*.35}" fill="${cs}"/>
+      <!-- Highlight on body -->
+      <ellipse cx="${bw*.35}" cy="${bh*.35}" rx="${bw*.18}" ry="${bh*.12}"
+               fill="#fff" opacity=".18"/>
     </svg>`;
+
+    el.appendChild(lg);
+    el.appendChild(rg);
+    el.appendChild(bd);
     return el;
 }
 
 function spawnButterfly(delay) {
     setTimeout(() => {
         const palette = BF_PALETTES[Math.floor(Math.random() * BF_PALETTES.length)];
-        const size   = 22 + Math.random() * 22;
-        const el     = makeButterflyEl(palette, size);
-        const baseY  = 55 + Math.random() * (window.innerHeight * 0.72);
-        const speed  = 1.1 + Math.random() * 2.4;
-        const amp    = 28 + Math.random() * 65;
-        const freq   = 0.008 + Math.random() * 0.014;
-        const phase  = Math.random() * Math.PI * 2;
-        let x = -el.offsetWidth - 20 || -80;
+        const size  = 26 + Math.random() * 24;
+        const el    = makePremiumButterfly(palette, size);
+        const baseY = 55 + Math.random() * (window.innerHeight * 0.7);
+        const speed = 1.0 + Math.random() * 2.2;
+        const amp   = 30 + Math.random() * 70;
+        const freq  = 0.007 + Math.random() * 0.013;
+        const phase = Math.random() * Math.PI * 2;
+        let x = -(size * 3);
 
-        el.style.top = baseY + 'px';
+        el.style.top  = baseY + 'px';
         el.style.left = x + 'px';
         document.body.appendChild(el);
-
-        // Randomise flap speed per butterfly
-        const flapDur = (0.18 + Math.random() * 0.2).toFixed(2) + 's';
-        el.querySelectorAll('.bf-wings-left,.bf-wings-right').forEach(w => {
-            w.style.animationDuration = flapDur;
-        });
 
         function fly() {
             x += speed;
             const y = baseY + Math.sin(x * freq + phase) * amp;
-            el.style.left  = x + 'px';
-            el.style.top   = y + 'px';
-            if (x > window.innerWidth + 100) { el.remove(); return; }
+            el.style.left = x + 'px';
+            el.style.top  = y + 'px';
+            if (x > window.innerWidth + 160) { el.remove(); return; }
             requestAnimationFrame(fly);
         }
         fly();
@@ -1108,9 +1216,9 @@ function spawnButterfly(delay) {
 }
 
 function launchButterflies() {
-    const count = 7 + Math.floor(Math.random() * 4); // 7–10
+    const count = 8 + Math.floor(Math.random() * 4);
     for (let i = 0; i < count; i++) {
-        spawnButterfly(i * 650 + Math.random() * 350);
+        spawnButterfly(i * 600 + Math.random() * 300);
     }
 }
 
