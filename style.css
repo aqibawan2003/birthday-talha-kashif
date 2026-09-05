@@ -917,13 +917,21 @@ body,section,.hero-section,.footer,.letter-container,
              0 0 20px rgba(248,87,166,.25);
 }
 
-/* ===== BUTTERFLIES ===== */
+/* ===== BUTTERFLIES — CSS 3D perspective wings ===== */
 .butterfly{
   position:fixed;pointer-events:none;z-index:99998;
   will-change:left,top;
 }
-.butterfly svg{display:block;}
-.bf-wings-left{transform-origin:right center;animation:bfFlapL .28s ease-in-out infinite alternate;}
-.bf-wings-right{transform-origin:left center;animation:bfFlapR .28s ease-in-out infinite alternate;}
-@keyframes bfFlapL{from{transform:scaleX(1) skewY(-4deg)}to{transform:scaleX(.18) skewY(4deg)}}
-@keyframes bfFlapR{from{transform:scaleX(1) skewY(4deg)}to{transform:scaleX(.18) skewY(-4deg)}}
+.bf-left-group{
+  position:absolute;
+  transform-style:preserve-3d;
+  animation:bfFlapL3d .32s ease-in-out infinite alternate;
+}
+.bf-right-group{
+  position:absolute;
+  transform-style:preserve-3d;
+  animation:bfFlapR3d .32s ease-in-out infinite alternate;
+}
+.bf-body{position:absolute;pointer-events:none;}
+@keyframes bfFlapL3d{from{transform:rotateY(0deg)}to{transform:rotateY(62deg)}}
+@keyframes bfFlapR3d{from{transform:rotateY(0deg)}to{transform:rotateY(-62deg)}}
