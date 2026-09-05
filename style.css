@@ -532,7 +532,11 @@ section{position:relative;z-index:2;padding:80px 20px}
   .stats-grid{grid-template-columns:1fr}
   .kpi-grid{grid-template-columns:1fr}
   .troll-cards{grid-template-columns:1fr}
-  .music-player{min-width:unset;padding:10px 14px;gap:10px}
+  .music-player{
+    top:auto;bottom:16px;left:16px;
+    transform:none;
+    min-width:unset;padding:10px 14px;gap:10px;
+  }
   .music-info{display:none}
 }
 /* ===== FAKE LOADING SCREEN ===== */
