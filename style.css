@@ -532,8 +532,9 @@ section{position:relative;z-index:2;padding:80px 20px}
   .stats-grid{grid-template-columns:1fr}
   .kpi-grid{grid-template-columns:1fr}
   .troll-cards{grid-template-columns:1fr}
-  /* Music player — compact fixed circle, bottom-right */
+  /* Both buttons: explicitly fixed so they never scroll */
   .music-player{
+    position:fixed!important;
     bottom:16px;right:16px;top:auto;left:auto;transform:none;
     min-width:unset;width:52px;height:52px;border-radius:50%;
     padding:0;gap:0;justify-content:center;
@@ -541,8 +542,7 @@ section{position:relative;z-index:2;padding:80px 20px}
   }
   .music-info,.music-equalizer,.music-vinyl{display:none}
   .music-btn{width:38px;height:38px;font-size:1rem}
-  /* Theme toggle — already top-right, just confirm it stays */
-  .theme-toggle-btn{position:fixed;top:16px;right:16px}
+  .theme-toggle-btn{position:fixed!important;top:16px;right:16px}
   .achievement-toast{display:none!important}
 }
 /* ===== FAKE LOADING SCREEN ===== */
