@@ -994,3 +994,43 @@ function showDblToast(msg) {
     clearTimeout(dblToastTimer);
     dblToastTimer = setTimeout(() => el.classList.remove('show'), 3500);
 }
+
+// ===== DAY / NIGHT THEME TOGGLE =====
+function toggleTheme() {
+    const html = document.documentElement;
+    const label = document.getElementById('themeLabel');
+    const knob  = document.getElementById('toggleKnob');
+    const isLight = html.getAttribute('data-theme') === 'light';
+
+    if (isLight) {
+        // → Night (dark)
+        html.removeAttribute('data-theme');
+        if (label) label.textContent = 'Day Mode';
+        if (knob)  knob.textContent  = '🌙';
+        localStorage.setItem('bday-theme', 'dark');
+        showDblToast('🌙 Night mode on — looking mysterious!');
+    } else {
+        // → Day (light)
+        html.setAttribute('data-theme', 'light');
+        if (label) label.textContent = 'Night Mode';
+        if (knob)  knob.textContent  = '☀️';
+        localStorage.setItem('bday-theme', 'light');
+        showDblToast('☀️ Day mode on — bright and beautiful!');
+    }
+    playTone(isLight ? 400 : 700, 'sine', .1, .15);
+}
+
+// Apply saved theme immediately on load
+(function () {
+    const saved = localStorage.getItem('bday-theme');
+    if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        // Update button labels once DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            const label = document.getElementById('themeLabel');
+            const knob  = document.getElementById('toggleKnob');
+            if (label) label.textContent = 'Night Mode';
+            if (knob)  knob.textContent  = '☀️';
+        });
+    }
+})();
