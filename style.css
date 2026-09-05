@@ -532,17 +532,23 @@ section{position:relative;z-index:2;padding:80px 20px}
   .stats-grid{grid-template-columns:1fr}
   .kpi-grid{grid-template-columns:1fr}
   .troll-cards{grid-template-columns:1fr}
-  /* Both buttons: explicitly fixed so they never scroll */
+  /* Theme toggle — top-right, locked */
+  .theme-toggle-btn{
+    position:fixed!important;
+    top:16px;right:16px;
+    will-change:transform;
+  }
+  /* Music button — right next to toggle, top-right cluster */
   .music-player{
     position:fixed!important;
-    bottom:16px;right:16px;top:auto;left:auto;transform:none;
-    min-width:unset;width:52px;height:52px;border-radius:50%;
+    top:16px;right:72px;bottom:auto;left:auto;transform:none;
+    min-width:unset;width:48px;height:48px;border-radius:50%;
     padding:0;gap:0;justify-content:center;
     box-shadow:0 4px 20px rgba(108,99,255,.45);
+    will-change:transform;
   }
   .music-info,.music-equalizer,.music-vinyl{display:none}
-  .music-btn{width:38px;height:38px;font-size:1rem}
-  .theme-toggle-btn{position:fixed!important;top:16px;right:16px}
+  .music-btn{width:36px;height:36px;font-size:.9rem}
   .achievement-toast{display:none!important}
 }
 /* ===== FAKE LOADING SCREEN ===== */
