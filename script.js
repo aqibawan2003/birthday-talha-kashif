@@ -997,40 +997,146 @@ function showDblToast(msg) {
 
 // ===== DAY / NIGHT THEME TOGGLE =====
 function toggleTheme() {
-    const html = document.documentElement;
-    const label = document.getElementById('themeLabel');
-    const knob  = document.getElementById('toggleKnob');
+    const html  = document.documentElement;
+    const icon  = document.getElementById('themeIcon');
     const isLight = html.getAttribute('data-theme') === 'light';
-
     if (isLight) {
-        // → Night (dark)
         html.removeAttribute('data-theme');
-        if (label) label.textContent = 'Day Mode';
-        if (knob)  knob.textContent  = '🌙';
-        localStorage.setItem('bday-theme', 'dark');
-        showDblToast('🌙 Night mode on — looking mysterious!');
+        if (icon) icon.textContent = '☀️';
+        localStorage.setItem('bday-theme','dark');
+        showDblToast('🌙 Night mode — dark & mysterious!');
     } else {
-        // → Day (light)
-        html.setAttribute('data-theme', 'light');
-        if (label) label.textContent = 'Night Mode';
-        if (knob)  knob.textContent  = '☀️';
-        localStorage.setItem('bday-theme', 'light');
-        showDblToast('☀️ Day mode on — bright and beautiful!');
+        html.setAttribute('data-theme','light');
+        if (icon) icon.textContent = '🌙';
+        localStorage.setItem('bday-theme','light');
+        showDblToast('☀️ Day mode — bright & beautiful!');
     }
-    playTone(isLight ? 400 : 700, 'sine', .1, .15);
+    playTone(isLight ? 400 : 700,'sine',.1,.15);
 }
-
-// Apply saved theme immediately on load
-(function () {
+(function(){
     const saved = localStorage.getItem('bday-theme');
-    if (saved === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-        // Update button labels once DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            const label = document.getElementById('themeLabel');
-            const knob  = document.getElementById('toggleKnob');
-            if (label) label.textContent = 'Night Mode';
-            if (knob)  knob.textContent  = '☀️';
+    if(saved==='light'){
+        document.documentElement.setAttribute('data-theme','light');
+        document.addEventListener('DOMContentLoaded',()=>{
+            const icon=document.getElementById('themeIcon');
+            if(icon) icon.textContent='🌙';
         });
     }
 })();
+
+// ===== BUTTERFLIES =====
+const BF_PALETTES = [
+    // [wing1, wing2, spot, glow]
+    ['#f857a6','#ff90c8','#ffd700','rgba(248,87,166,.6)'],   // pink-gold
+    ['#7c6fff','#b8b0ff','#00d4ff','rgba(124,111,255,.6)'],  // purple-cyan
+    ['#00d4ff','#80eaff','#a8ff78','rgba(0,212,255,.5)'],    // cyan-green
+    ['#ffd700','#ffe980','#ff6b6b','rgba(255,215,0,.55)'],   // gold-red
+    ['#a8ff78','#d0ffb0','#7c6fff','rgba(168,255,120,.5)'],  // green-purple
+    ['#ff6b9d','#ffb3cc','#ffd700','rgba(255,107,157,.55)'], // rose-gold
+    ['#40e0ff','#a0f8ff','#f857a6','rgba(64,224,255,.5)'],   // sky-pink
+];
+
+function makeButterflyEl(palette, size) {
+    const [c1, c2, cs, glow] = palette;
+    const hw = size, hh = size * 0.65;
+    const el = document.createElement('div');
+    el.className = 'butterfly';
+    el.style.cssText = `width:${hw*2}px;height:${hh*2.2}px;filter:drop-shadow(0 0 8px ${glow})`;
+    el.innerHTML = `<svg viewBox="-${hw} -${hh*0.8} ${hw*2} ${hh*2.4}" xmlns="http://www.w3.org/2000/svg" width="${hw*2}" height="${hh*2.2}">
+      <g class="bf-wings-left">
+        <path d="M0,0 C${-hw*.18},${-hh*.9} ${-hw*.85},${-hh*1.1} ${-hw*.98},${-hh*.3}
+                 C${-hw*1.05},${hh*.3} ${-hw*.7},${hh*.7} 0,${hh*.25}"
+              fill="${c1}" opacity=".92"/>
+        <path d="M0,${hh*.2} C${-hw*.22},${hh*.5} ${-hw*.75},${hh*1.05} ${-hw*.6},${hh*1.28}
+                 C${-hw*.45},${hh*1.5} ${-hw*.15},${hh*.95} 0,${hh*.55}"
+              fill="${c2}" opacity=".82"/>
+        <circle cx="${-hw*.52}" cy="${-hh*.28}" r="${size*.14}" fill="${cs}" opacity=".55"/>
+      </g>
+      <g class="bf-wings-right">
+        <path d="M0,0 C${hw*.18},${-hh*.9} ${hw*.85},${-hh*1.1} ${hw*.98},${-hh*.3}
+                 C${hw*1.05},${hh*.3} ${hw*.7},${hh*.7} 0,${hh*.25}"
+              fill="${c1}" opacity=".92"/>
+        <path d="M0,${hh*.2} C${hw*.22},${hh*.5} ${hw*.75},${hh*1.05} ${hw*.6},${hh*1.28}
+                 C${hw*.45},${hh*1.5} ${hw*.15},${hh*.95} 0,${hh*.55}"
+              fill="${c2}" opacity=".82"/>
+        <circle cx="${hw*.52}" cy="${-hh*.28}" r="${size*.14}" fill="${cs}" opacity=".55"/>
+      </g>
+      <!-- body -->
+      <ellipse cx="0" cy="${hh*.3}" rx="${size*.07}" ry="${hh*.6}" fill="#2a1240" opacity=".85"/>
+      <circle  cx="0" cy="${-hh*.1}" r="${size*.1}" fill="#2a1240" opacity=".85"/>
+      <!-- antennae -->
+      <line x1="0" y1="${-hh*.2}" x2="${-hw*.3}" y2="${-hh*.95}" stroke="#2a1240" stroke-width="${size*.04}" stroke-linecap="round"/>
+      <line x1="0" y1="${-hh*.2}" x2="${hw*.3}"  y2="${-hh*.95}" stroke="#2a1240" stroke-width="${size*.04}" stroke-linecap="round"/>
+      <circle cx="${-hw*.3}" cy="${-hh*.95}" r="${size*.06}" fill="${cs}"/>
+      <circle cx="${hw*.3}"  cy="${-hh*.95}" r="${size*.06}" fill="${cs}"/>
+    </svg>`;
+    return el;
+}
+
+function spawnButterfly(delay) {
+    setTimeout(() => {
+        const palette = BF_PALETTES[Math.floor(Math.random() * BF_PALETTES.length)];
+        const size   = 22 + Math.random() * 22;
+        const el     = makeButterflyEl(palette, size);
+        const baseY  = 55 + Math.random() * (window.innerHeight * 0.72);
+        const speed  = 1.1 + Math.random() * 2.4;
+        const amp    = 28 + Math.random() * 65;
+        const freq   = 0.008 + Math.random() * 0.014;
+        const phase  = Math.random() * Math.PI * 2;
+        let x = -el.offsetWidth - 20 || -80;
+
+        el.style.top = baseY + 'px';
+        el.style.left = x + 'px';
+        document.body.appendChild(el);
+
+        // Randomise flap speed per butterfly
+        const flapDur = (0.18 + Math.random() * 0.2).toFixed(2) + 's';
+        el.querySelectorAll('.bf-wings-left,.bf-wings-right').forEach(w => {
+            w.style.animationDuration = flapDur;
+        });
+
+        function fly() {
+            x += speed;
+            const y = baseY + Math.sin(x * freq + phase) * amp;
+            el.style.left  = x + 'px';
+            el.style.top   = y + 'px';
+            if (x > window.innerWidth + 100) { el.remove(); return; }
+            requestAnimationFrame(fly);
+        }
+        fly();
+    }, delay);
+}
+
+function launchButterflies() {
+    const count = 7 + Math.floor(Math.random() * 4); // 7–10
+    for (let i = 0; i < count; i++) {
+        spawnButterfly(i * 650 + Math.random() * 350);
+    }
+}
+
+// ===== AUTO FIREWORKS (on page load, after fake loading screen) =====
+function autoFireworks() {
+    if (typeof confetti !== 'function') return;
+    const colors = ['#7c6fff','#f857a6','#ffd700','#00d4ff','#a8ff78','#ff6b9d','#40e0ff'];
+    let bursts = 0;
+    function burst() {
+        if (bursts >= 9) return;
+        bursts++;
+        confetti({
+            particleCount: 70,
+            spread: 110,
+            origin: { x: 0.08 + Math.random() * 0.84, y: 0.05 + Math.random() * 0.38 },
+            colors: colors,
+            startVelocity: 38 + Math.random() * 16,
+            gravity: 0.85,
+            ticks: 220,
+            scalar: 0.88,
+            shapes: ['circle','square'],
+        });
+        setTimeout(burst, 900 + Math.random() * 700);
+    }
+    burst();
+}
+
+// Trigger after the fake loading screen clears (~8s)
+setTimeout(() => { launchButterflies(); autoFireworks(); }, 8200);
