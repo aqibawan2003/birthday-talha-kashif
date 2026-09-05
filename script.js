@@ -1116,14 +1116,9 @@ function makePremiumButterfly(palette, size) {
           </g>
           <!-- Iridescent shimmer overlay -->
           <path d="${uf}" fill="url(#sh${uid}${isLeft?'l':'r'})"/>
-          <!-- Upper eye spot (3 rings) -->
-          <circle cx="${ex1}" cy="${sh*.21}" r="${size*.17}" fill="${c2}" opacity=".72"/>
-          <circle cx="${ex1}" cy="${sh*.21}" r="${size*.1}"  fill="#fff"  opacity=".6"/>
-          <circle cx="${ex1}" cy="${sh*.21}" r="${size*.045}" fill="#0a0522" opacity=".9"/>
-          <!-- Lower eye spot (2 rings) -->
-          <circle cx="${ex2}" cy="${sh*.87}" r="${size*.12}" fill="${cs}" opacity=".65"/>
-          <circle cx="${ex2}" cy="${sh*.87}" r="${size*.07}" fill="#fff"  opacity=".55"/>
-          <circle cx="${ex2}" cy="${sh*.87}" r="${size*.03}" fill="#0a0522" opacity=".8"/>
+          <!-- Upper eye spot (2 rings) -->
+          <circle cx="${ex1}" cy="${sh*.21}" r="${size*.12}" fill="${c2}" opacity=".65"/>
+          <circle cx="${ex1}" cy="${sh*.21}" r="${size*.055}" fill="#fff" opacity=".5"/>
         </svg>`;
     }
 
@@ -1190,7 +1185,7 @@ function makePremiumButterfly(palette, size) {
 function spawnButterfly(delay) {
     setTimeout(() => {
         const palette = BF_PALETTES[Math.floor(Math.random() * BF_PALETTES.length)];
-        const size  = 26 + Math.random() * 24;
+        const size  = 12 + Math.random() * 12;
         const el    = makePremiumButterfly(palette, size);
         const baseY = 55 + Math.random() * (window.innerHeight * 0.7);
         const speed = 1.0 + Math.random() * 2.2;
@@ -1216,7 +1211,7 @@ function spawnButterfly(delay) {
 }
 
 function launchButterflies() {
-    const count = 8 + Math.floor(Math.random() * 4);
+    const count = 4 + Math.floor(Math.random() * 3);
     for (let i = 0; i < count; i++) {
         spawnButterfly(i * 600 + Math.random() * 300);
     }
