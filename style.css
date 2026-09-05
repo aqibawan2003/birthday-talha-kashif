@@ -9,27 +9,27 @@
   --cyan:#00d4ff;          /* cyan */
   --green:#a8ff78;         /* lime */
 
-  /* Background Levels — smooth section journey */
-  --bg-0:#010009;          /* deepest space */
-  --bg-1:#07031a;          /* dark violet */
-  --bg-2:#0b0820;          /* deep indigo */
-  --bg-3:#0e0b2e;          /* cosmic purple */
-  --bg-4:#07102a;          /* midnight blue */
-  --bg-5:#120a30;          /* rich violet */
+  /* Background Levels — smooth section journey (lighter palette) */
+  --bg-0:#0d0b22;          /* deep midnight indigo */
+  --bg-1:#110e2e;          /* dark violet */
+  --bg-2:#141138;          /* deep indigo */
+  --bg-3:#181440;          /* cosmic purple */
+  --bg-4:#111840;          /* midnight blue-purple */
+  --bg-5:#1c1448;          /* rich violet */
 
   /* Keep legacy names for compatibility */
-  --dark:#010009;
-  --dark2:#0b0820;
-  --dark3:#180e40;
+  --dark:#0d0b22;
+  --dark2:#141138;
+  --dark3:#241a5a;
 
   /* Text */
   --text:#ffffff;
   --muted:rgba(255,255,255,0.72);   /* increased from 0.62 */
 
   /* Cards */
-  --glass:rgba(255,255,255,0.07);   /* increased from 0.055 */
-  --glass2:rgba(255,255,255,0.11);
-  --border:rgba(255,255,255,0.12);  /* increased from 0.09 */
+  --glass:rgba(255,255,255,0.09);
+  --glass2:rgba(255,255,255,0.14);
+  --border:rgba(255,255,255,0.15);  /* more visible on lighter bg */
   --border-hover:rgba(124,111,255,0.55);
 }
 html{scroll-behavior:smooth}
@@ -52,7 +52,7 @@ body{font-family:'Poppins',sans-serif;background:var(--dark);color:var(--text);o
 /* ===== AURORA BACKGROUND ===== */
 .aurora{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .aurora-blob{
-  position:absolute;border-radius:50%;filter:blur(90px);opacity:.45;
+  position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;
   animation:auroraFloat 12s ease-in-out infinite alternate;
 }
 .a1{width:700px;height:500px;background:radial-gradient(circle,#7c6fff 0%,transparent 70%);top:-15%;left:-10%;animation-duration:14s}
@@ -537,7 +537,7 @@ section{position:relative;z-index:2;padding:80px 20px}
 }
 /* ===== FAKE LOADING SCREEN ===== */
 .loading-screen{
-  position:fixed;inset:0;background:#020010;z-index:9999999;
+  position:fixed;inset:0;background:#0d0b22;z-index:9999999;
   display:flex;align-items:center;justify-content:center;
   transition:opacity .6s ease,visibility .6s ease;
 }
